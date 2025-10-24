@@ -8,12 +8,11 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Roles, UserStatus } from './enum.entity';
-import { FileEntity } from './file.entity';
+import { Gender, Roles, UserStatus } from './enum.entity';
 
 @Entity('users')
 @Index('idx_users_role', ['role'])
-export class UserEntity {
+export class User {
   @PrimaryColumn('uuid')
   id: number;
 
@@ -26,14 +25,17 @@ export class UserEntity {
   @Column()
   name: string;
 
+  @Column()
+  gender: Gender;
+
   @Column({ type: 'enum', enum: Roles })
   role: Roles;
 
   @Column({ type: 'enum', enum: UserStatus, default: UserStatus.ACTIVE })
   status: UserStatus;
 
-  @OneToMany(() => FileEntity, (file) => file.id)
-  filesUploaded: FileEntity[];
+  // @OneToMany(() => RecordEntity, (file) => file.id)
+  // filesUploaded: RecordEntity[];
 
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt: Date;

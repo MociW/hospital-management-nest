@@ -11,3 +11,8 @@ export enum UserStatus {
   INVITED = 'INVITED',
   SUSPENDED = 'SUSPENDED',
 }
+
+export enum Gender {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+}

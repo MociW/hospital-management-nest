@@ -1,14 +1,14 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { DoctorEntity } from './doctor.entity';
+import { Doctor } from './doctor.entity';
 
 @Entity('specialties')
-export class SpecialtyEntity {
+export class Specialty{
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ unique: true })
   name: string;
 
-  @OneToMany(() => DoctorEntity, (doctor) => doctor.specialty)
-  doctors: DoctorEntity[];
+  @OneToMany(() => Doctor, (doctor) => doctor.specialty)
+  doctors: Doctor[];
 }

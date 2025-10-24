@@ -1,7 +1,7 @@
 import { Column, ManyToOne, PrimaryColumn } from 'typeorm';
-import { UserEntity } from './user.entity';
+import { User } from './user.entity';
 
-export class FileEntity {
+export class Record {
   @PrimaryColumn('uuid')
   id: string;
 
@@ -14,7 +14,7 @@ export class FileEntity {
   @Column()
   storageUrl: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.id)
   uploadedBy: string;
 
   @Column()
