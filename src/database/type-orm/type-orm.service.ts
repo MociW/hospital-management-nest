@@ -11,7 +11,7 @@ export const databaseProviders = [
       const dataSource = new DataSource({
         type: 'postgres',
         host: cfg.get('DB_HOST', 'localhost'),
-        port: Number(cfg.get('DB_PORT', 3306)),
+        port: Number(cfg.get('DB_PORT', 5432)),
         username: cfg.get('DB_USER', 'root'),
         password: cfg.get('DB_PASS', 'root'),
         database: cfg.get('DB_NAME', 'test'),

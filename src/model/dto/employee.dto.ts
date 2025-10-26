@@ -5,16 +5,13 @@ export class EmployeeRegister {
   email: string;
   password: string;
   fullName: string;
-  dateOfBirth: Date;
+  dateOfBirth: string;
   gender: Gender;
   phone: string;
   citizenId: string;
   employeeCode: string;
   departmentId?: string;
   userStatus: UserStatus;
-  createdBy: string;
-  updatedBy: string;
-  deletedBy: string;
 }
 
 export class EmployeeResponse {

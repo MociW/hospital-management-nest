@@ -98,7 +98,7 @@ CREATE TABLE "employees" (
   "id" uuid PRIMARY KEY,
   "email" varchar UNIQUE NOT NULL,
   "password_hash" varchar NOT NULL,
-  "fullname" varchar NOT NULL,
+  "full_name" varchar NOT NULL,
   "date_of_birth" timestamptz NOT NULL,
   "gender" gender NOT NULL,
   "phone" varchar NOT NULL,
