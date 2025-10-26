@@ -1,0 +1,64 @@
+services:
+  hospital-database:
+    image: postgres:16-alpine
+    container_name: hospital_db
+    ports:
+      - "5545:5432"
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: hospital_db
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --lc-collate=C --lc-ctype=C"
+    volumes:
+      - hospital-db-volume:/var/lib/postgresql/data
+    networks:
+      - hospital_management_net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d hospital_db" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    labels:
+      - "com.hospital-management.service=hospital-database"
+      - "com.hospital-management.description=hospital database"
+
+  hospital-minio:
+    image: minio/minio
+    container_name: hospital_minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000" # S3 API port
+      - "9001:9001" # MinIO Console port
+    environment:
+      MINIO_ROOT_USER: root
+      MINIO_ROOT_PASSWORD: WqYNmSnOBT
+    volumes:
+      - hospital-minio-data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - hospital_management_net
+
+networks:
+  hospital_management_net:
+    driver: bridge
+    labels:
+      - "com.hospital-management.network=main"
+      - "com.hospital-management.description=Main application network"
+
+volumes:
+  hospital-db-volume:
+    labels:
+      - "com.hospital-management.volume=hospital-database"
+      - "com.hospital-management.description=hospital database storage"
+
+  hospital-minio-data:
+    labels:
+      - "com.hospital-management.volume=hospital-minio"
+      - "com.hospital-management.description=S3 database storage"

@@ -1,5 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
-import { User } from './user.entity';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('patients')
 export class Patient {
@@ -8,10 +7,6 @@ export class Patient {
 
   @Column({ name: 'user_id', unique: true })
   userId: string;
-
-  @OneToOne(() => User, (user) => user.id, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
-  user: User;
 
   @Column({ unique: true })
   mrn: string;
