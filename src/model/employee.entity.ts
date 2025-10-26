@@ -17,7 +17,7 @@ export class Employee {
   email: string;
 
   @Column()
-  passwordHash: string;
+  password: string;
 
   @Column()
   fullName: string;
@@ -63,4 +63,7 @@ export class Employee {
 
   @Column({ name: 'deleted_by', unique: true })
   deletedBy: string;
+
+  @Column()
+  token: string;
 }

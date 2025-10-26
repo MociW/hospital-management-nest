@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { WinstonModule } from 'nest-winston';
+import { ValidationService } from './validation/validation.service';
 import * as winston from 'winston';
 
 @Module({
@@ -26,5 +27,7 @@ import * as winston from 'winston';
       ],
     }),
   ],
+  providers: [ValidationService],
+  exports: [ValidationService],
 })
 export class CommonModule {}
