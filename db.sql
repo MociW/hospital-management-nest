@@ -81,43 +81,43 @@ CREATE TYPE "channel" AS ENUM (
 );
 
 CREATE TABLE "departments" (
-  "id" varchar PRIMARY KEY,
+  "id" uuid PRIMARY KEY,
   "code" varchar UNIQUE NOT NULL,
   "name" varchar UNIQUE NOT NULL,
   "description" text,
-  "head_id" varchar,
+  "head_id" uuid,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "updated_at" timestamptz NOT NULL DEFAULT (now()),
-  "created_by" varchar,
-  "updated_by" varchar,
+  "created_by" uuid,
+  "updated_by" uuid,
   "deleted_at" timestamptz,
-  "deleted_by" varchar
+  "deleted_by" uuid
 );
 
 CREATE TABLE "employees" (
-  "id" varchar PRIMARY KEY,
+  "id" uuid PRIMARY KEY,
   "email" varchar UNIQUE NOT NULL,
   "password" varchar NOT NULL,
   "full_name" varchar NOT NULL,
   "date_of_birth" timestamptz NOT NULL,
   "gender" gender NOT NULL,
-  "phone" varchar NOT NULL,
+  "phone" varchar,
   "citizen_id" varchar UNIQUE NOT NULL,
   "employee_code" varchar UNIQUE NOT NULL,
-  "department_id" varchar,
+  "department_id" uuid,
   "user_status" user_status NOT NULL DEFAULT 'ACTIVE',
   "employment_status" employment_status NOT NULL DEFAULT 'ACTIVE',
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "updated_at" timestamptz NOT NULL DEFAULT (now()),
-  "created_by" varchar,
-  "updated_by" varchar,
+  "created_by" uuid,
+  "updated_by" uuid,
   "deleted_at" timestamptz,
-  "deleted_by" varchar,
+  "deleted_by" uuid,
   "token" varchar
 );
 
 CREATE TABLE "roles" (
-  "id" varchar PRIMARY KEY,
+  "id" uuid PRIMARY KEY,
   "name" varchar UNIQUE NOT NULL,
   "description" text,
   "is_system" bool NOT NULL DEFAULT true,
@@ -127,15 +127,15 @@ CREATE TABLE "roles" (
 );
 
 CREATE TABLE "employee_roles" (
-  "employee_id" varchar NOT NULL,
-  "role_id" varchar NOT NULL,
+  "employee_id" uuid NOT NULL,
+  "role_id" uuid NOT NULL,
   "assigned_at" timestamptz NOT NULL DEFAULT (now()),
-  "assigned_by" varchar,
+  "assigned_by" uuid,
   PRIMARY KEY ("employee_id", "role_id")
 );
 
 CREATE TABLE "patients" (
-  "id" varchar PRIMARY KEY,
+  "id" uuid PRIMARY KEY,
   "mrn" varchar UNIQUE NOT NULL,
   "citizen_id" varchar UNIQUE,
   "first_name" varchar NOT NULL,
@@ -150,17 +150,17 @@ CREATE TABLE "patients" (
   "phone" varchar,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "updated_at" timestamptz NOT NULL DEFAULT (now()),
-  "created_by" varchar,
-  "updated_by" varchar,
+  "created_by" uuid,
+  "updated_by" uuid,
   "deleted_at" timestamptz,
-  "deleted_by" varchar
+  "deleted_by" uuid
 );
 
 CREATE TABLE "appointments" (
-  "id" varchar PRIMARY KEY,
-  "provider_employee_id" varchar NOT NULL,
-  "patient_id" varchar NOT NULL,
-  "department_id" varchar,
+  "id" uuid PRIMARY KEY,
+  "provider_employee_id" uuid NOT NULL,
+  "patient_id" uuid NOT NULL,
+  "department_id" uuid,
   "visit_type" visit_type NOT NULL DEFAULT 'NEW',
   "channel" channel NOT NULL DEFAULT 'IN_PERSON',
   "reason" text,
@@ -172,20 +172,20 @@ CREATE TABLE "appointments" (
   "check_out_at" timestamptz,
   "cancelled_at" timestamptz,
   "cancel_reason" varchar,
-  "rescheduled_from_id" varchar,
+  "rescheduled_from_id" uuid,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "updated_at" timestamptz NOT NULL DEFAULT (now()),
-  "created_by" varchar,
-  "updated_by" varchar,
+  "created_by" uuid,
+  "updated_by" uuid,
   "deleted_at" timestamptz,
-  "deleted_by" varchar
+  "deleted_by" uuid
 );
 
 CREATE TABLE "specialties" (
-  "id" varchar PRIMARY KEY,
+  "id" uuid PRIMARY KEY,
   "code" varchar UNIQUE NOT NULL,
   "name" varchar NOT NULL,
-  "parent_id" varchar,
+  "parent_id" uuid,
   "description" text,
   "is_active" bool NOT NULL DEFAULT true,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
@@ -193,15 +193,15 @@ CREATE TABLE "specialties" (
 );
 
 CREATE TABLE "employee_specialties" (
-  "employee_id" varchar NOT NULL,
-  "specialty_id" varchar NOT NULL,
+  "employee_id" uuid NOT NULL,
+  "specialty_id" uuid NOT NULL,
   "is_primary" bool NOT NULL DEFAULT false,
   "proficiency" varchar,
   "certification_no" varchar,
   "cert_authority" varchar,
   "certified_at" timestamptz,
   "expires_at" timestamptz,
-  "department_id" varchar,
+  "department_id" uuid,
   "privileges" text,
   "assigned_at" timestamptz NOT NULL DEFAULT (now()),
   "revoked_at" timestamptz

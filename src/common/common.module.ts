@@ -1,8 +1,14 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { WinstonModule } from 'nest-winston';
 import { ValidationService } from './validation/validation.service';
 import * as winston from 'winston';
+import { APP_FILTER } from '@nestjs/core';
+import { ErrorFilter } from './error/error.filter';
+import { AuthMiddleware } from './auth/auth.middleware';
+import { TypeOrmModule } from '../database/type-orm/type-orm.module';
+import { DepartementModule } from './departement/departement.module';
+import { DepartementModule } from './departement/departement.module';
 
 @Module({
   imports: [
@@ -26,8 +32,20 @@ import * as winston from 'winston';
         }),
       ],
     }),
+    TypeOrmModule,
+    DepartementModule,
   ],
-  providers: [ValidationService],
+  providers: [
+    ValidationService,
+    {
+      provide: APP_FILTER,
+      useClass: ErrorFilter,
+    },
+  ],
   exports: [ValidationService],
 })
-export class CommonModule {}
+export class CommonModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('/');
+  }
+}

@@ -1,26 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { Employee } from '../../model/employee.entity';
+import { ValidationService } from '../../common/validation/validation.service';
 
 @Injectable()
 export class EmployeeService {
-  create(createEmployeeDto: CreateEmployeeDto) {
-    return 'This action adds a new employee';
-  }
-
-  findAll() {
-    return `This action returns all employee`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} employee`;
-  }
-
-  update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
-    return `This action updates a #${id} employee`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} employee`;
-  }
+  constructor(
+    @Inject('EMPLOYEE_REPOSITORY')
+    private employeeRepository: Repository<Employee>,
+    private validationService: ValidationService,
+  ) {}
 }
