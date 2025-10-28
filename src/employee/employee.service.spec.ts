@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EmployeeService } from './employee.service';
 import { EmployeeModule } from './employee.module';
-import { EmployeeRegister } from '../model/dto/employee.dto';
+import { EmployeeLogin, EmployeeRegister } from '../model/dto/employee.dto';
 import { Gender, UserStatus } from '../model/enum.entity';
 
 describe('EmployeeService (integration)', () => {
@@ -17,18 +17,27 @@ describe('EmployeeService (integration)', () => {
 
   it('should be able to register new data', async () => {
     const dto: EmployeeRegister = {
-      email: 'test@example.com',
-      password: 'test1234',
-      fullName: 'Test User',
-      dateOfBirth: '2002-02-12',
-      gender: Gender.MALE,
-      phone: '081234567890',
-      citizenId: 'ID-123',
-      employeeCode: 'EMP-001',
+      email: 'system@local.sys',
+      password: 'systemlocal',
+      fullName: 'SYSTEM',
+      dateOfBirth: new Date(),
+      gender: Gender.UNKNOWN,
+      citizenId: '00000000000',
+      employeeCode: 'EMP-000',
       userStatus: UserStatus.ACTIVE,
     };
 
     const result = await service.register(dto);
+    console.info(result);
+  });
+
+  it('should be able to login employee data', async () => {
+    const dto: EmployeeLogin = {
+      email: 'system@local.sys',
+      password: 'systemlocal',
+    };
+
+    const result = await service.login(dto);
     console.info(result);
   });
 });

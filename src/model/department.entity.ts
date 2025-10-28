@@ -7,9 +7,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('departments')
 export class Department {
-  @PrimaryColumn('uuid')
+  @PrimaryColumn('varchar')
   id: string;
 
   @Column()
@@ -21,17 +21,17 @@ export class Department {
   @Column()
   description: string;
 
-  @Column({ name: 'head_id', unique: true })
-  headId: string;
+  @Column({ name: 'head_id', unique: true, nullable: true, type: 'varchar' })
+  headId: string | null;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
-  createDate: Date;
+  createAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
-  updateDate: Date;
+  updateAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz' })
-  deletedAt: Date;
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz', nullable: true })
+  deletedAt: Date | null;
 
   @Column({ name: 'created_by', unique: true })
   createdBy: string;
@@ -39,6 +39,6 @@ export class Department {
   @Column({ name: 'update_by', unique: true })
   updatedBy: string;
 
-  @Column({ name: 'deleted_by', unique: true })
-  deletedBy: string;
+  @Column({ name: 'deleted_by', unique: true, nullable: true, type: 'varchar' })
+  deletedBy: string | null;
 }

@@ -10,4 +10,5 @@ export class Patient {
 
   @Column({ unique: true })
   mrn: string;
+
 }

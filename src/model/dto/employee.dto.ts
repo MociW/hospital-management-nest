@@ -1,47 +1,78 @@
 import { Gender, UserStatus } from '../enum.entity';
 import { Employee } from '../employee.entity';
 
+// ============================================
+// Request DTOs
+// ============================================
+
 export class EmployeeRegister {
   email: string;
   password: string;
   fullName: string;
-  dateOfBirth: string;
+  dateOfBirth: Date;
   gender: Gender;
-  phone: string;
+  phone?: string;
   citizenId: string;
   employeeCode: string;
   departmentId?: string;
   userStatus: UserStatus;
+  createdBy?: string | null;
+  updatedBy?: string | null;
 }
+
+export class EmployeeLogin {
+  email: string;
+  password: string;
+  token?: string;
+}
+
+// ============================================
+// Single Flexible Response DTO
+// ============================================
 
 export class EmployeeResponse {
   email: string;
   fullName: string;
-  dateOfBirth: Date;
-  gender: Gender;
-  phone: string;
   employeeCode: string;
-  departmentId?: string;
   userStatus: UserStatus;
-  createdBy: string;
-  updatedBy: string;
-  deletedBy: string;
+  dateOfBirth?: Date;
+  gender?: Gender;
+  phone?: string | null;
+  citizenId?: string;
+  departmentId?: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+  createdBy?: string | null;
+  updatedBy?: string | null;
+  deletedBy?: string | null;
   token?: string;
 }
 
-export function convertEmployeeRequestToUserResponse(
+// ============================================
+// Simple Converter Function
+// ============================================
+
+export function toEmployeeResponse(
   employee: Employee,
+  token?: string,
 ): EmployeeResponse {
   return {
     email: employee.email,
     fullName: employee.fullName,
-    dateOfBirth: employee.datOfBirth,
-    gender: employee.gender,
-    phone: employee.phone,
     employeeCode: employee.employeeCode,
     userStatus: employee.userStatus,
-    createdBy: employee.createdBy,
-    updatedBy: employee.updatedBy,
-    deletedBy: employee.deletedBy,
+    dateOfBirth: employee.dateOfBirth,
+    gender: employee.gender,
+    phone: employee.phone || null,
+    citizenId: employee.citizenId,
+    departmentId: employee.departmentId || null,
+    createdAt: employee.createAt,
+    updatedAt: employee.updateAt,
+    deletedAt: employee.deletedAt || null,
+    createdBy: employee.createdBy || null,
+    updatedBy: employee.updatedBy || null,
+    deletedBy: employee.deletedBy || null,
+    ...(token && { token }), // Only include token if provided
   };
 }

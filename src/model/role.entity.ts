@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   DeleteDateColumn,
   Entity,
   PrimaryColumn,
@@ -20,12 +21,12 @@ export class Role {
   @Column()
   isSystem: boolean;
 
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
+  createAt: Date;
+
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
-  updateDate: Date;
+  updateAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz' })
-  deletedAt: Date;
-
-  @Column({ name: 'created_by', unique: true })
-  createdBy: string;
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz', nullable: true })
+  deletedAt: Date | null;
 }

@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { EmploymentStatus, Gender, UserStatus } from './enum.entity';
 
-@Entity()
+@Entity('employees')
 export class Employee {
   @PrimaryColumn('uuid')
   id: string;
@@ -19,51 +19,51 @@ export class Employee {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ name: 'full_name' })
   fullName: string;
 
-  @Column({ type: 'timestamptz', nullable: false })
-  datOfBirth: Date;
+  @Column({ name: 'date_of_birth', type: 'timestamptz', nullable: false })
+  dateOfBirth: Date;
 
-  @Column()
+  @Column({ type: 'enum', enum: Gender })
   gender: Gender;
 
-  @Column()
-  phone: string;
+  @Column({ nullable: true, type: 'varchar' })
+  phone: string | null;
 
-  @Column()
+  @Column({ name: 'citizen_id' })
   citizenId: string;
 
-  @Column()
+  @Column({ name: 'employee_code' })
   employeeCode: string;
 
-  @Column({ name: 'department_id', unique: true })
-  departmentId: string;
+  @Column({ name: 'department_id', nullable: true, type: 'uuid' })
+  departmentId?: string | null;
 
-  @Column({ type: 'enum', enum: UserStatus })
+  @Column({ name: 'user_status', type: 'enum', enum: UserStatus })
   userStatus: UserStatus;
 
-  @Column({ type: 'enum', enum: EmploymentStatus })
+  @Column({ name: 'employment_status', type: 'enum', enum: EmploymentStatus })
   employmentStatus: EmploymentStatus;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
-  createDate: Date;
+  createAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
-  updateDate: Date;
+  updateAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz' })
-  deletedAt: Date;
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz', nullable: true })
+  deletedAt?: Date;
 
-  @Column({ name: 'created_by', unique: true })
-  createdBy: string;
+  @Column({ name: 'created_by', type: 'uuid', nullable: true })
+  createdBy?: string | null;
 
-  @Column({ name: 'update_by', unique: true })
-  updatedBy: string;
+  @Column({ name: 'updated_by', type: 'uuid', nullable: true })
+  updatedBy?: string | null;
 
-  @Column({ name: 'deleted_by', unique: true })
-  deletedBy: string;
+  @Column({ name: 'deleted_by', type: 'uuid', nullable: true })
+  deletedBy?: string | null;
 
-  @Column()
-  token: string;
+  @Column({ nullable: true, type: 'uuid' })
+  token?: string | null;
 }
