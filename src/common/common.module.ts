@@ -7,8 +7,6 @@ import { APP_FILTER } from '@nestjs/core';
 import { ErrorFilter } from './error/error.filter';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { TypeOrmModule } from '../database/type-orm/type-orm.module';
-import { DepartementModule } from './departement/departement.module';
-import { DepartementModule } from './departement/departement.module';
 
 @Module({
   imports: [
@@ -33,7 +31,6 @@ import { DepartementModule } from './departement/departement.module';
       ],
     }),
     TypeOrmModule,
-    DepartementModule,
   ],
   providers: [
     ValidationService,

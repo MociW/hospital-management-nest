@@ -21,7 +21,7 @@ export class AuthMiddleware implements NestMiddleware {
       });
 
       if (data) {
-        req.employee = data;
+        req.user = data;
       }
     }
     next();

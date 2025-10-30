@@ -43,8 +43,5 @@ export class EmployeeResponse {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
-  createdBy?: string | null;
-  updatedBy?: string | null;
-  deletedBy?: string | null;
   token?: string;
 }

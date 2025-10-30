@@ -8,7 +8,7 @@ import { Request } from 'express';
 export const Auth = createParamDecorator(
   (data: unknown, context: ExecutionContext) => {
     const request = context.switchToHttp().getRequest<Request>();
-    const employee = request.employee;
+    const employee = request.user;
     if (employee) {
       return employee;
     } else {

@@ -9,5 +9,6 @@ import { CommonModule } from '../../common/common.module';
   imports: [TypeOrmModule, CommonModule],
   providers: [EmployeeService, ...employeeProviders],
   controllers: [EmployeeController],
+  exports: [...employeeProviders],
 })
 export class EmployeeModule {}
