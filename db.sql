@@ -108,12 +108,10 @@ CREATE TABLE "employees"
     "termination_date"  DATE,
     "created_at"        TIMESTAMPTZ         NOT NULL,
     "updated_at"        TIMESTAMPTZ         NOT NULL,
-    "deleted_at"        TIMESTAMPTZ,
-    "token"             VARCHAR(500)
+    "deleted_at"        TIMESTAMPTZ
 );
 
 COMMENT ON TABLE "employees" IS 'Hospital staff and employees';
-COMMENT ON COLUMN "employees"."token" IS 'Authentication token';
 COMMENT ON COLUMN "employees"."employee_code" IS 'Unique employee identifier';
 
 -- Roles Table

@@ -20,6 +20,44 @@ export class AuthService {
     private validationService: ValidationService,
   ) {}
 
+  async validateUser(req: EmployeeLogin): Promise<Employee> {
+    const validateData = this.validationService.validate(
+      AuthValidation.LOGIN,
+      req,
+    ) as EmployeeLogin;
+
+    const result = await this.repository.findOne({
+      where: { email: validateData.email },
+    });
+
+    if (!result) {
+      throw new HttpException(
+        'Email or Password is invalid',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      validateData.password,
+      result.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new HttpException(
+        'Email or Password is invalid',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return {
+      ...result,
+      email: result.email,
+      employeeCode: result.employeeCode,
+      fullName: result.fullName,
+      userStatus: result.userStatus,
+    };
+  }
+
   async register(req: EmployeeRegister): Promise<EmployeeResponse> {
     const validatedData = this.validationService.validate(
       AuthValidation.REGISTER,
@@ -48,8 +86,6 @@ export class AuthService {
       phone: validatedData.phone || null,
       createAt: now,
       updateAt: now,
-      createdBy: validatedData.createdBy || null,
-      updatedBy: validatedData.updatedBy || null,
     };
 
     const result = await this.repository.save(data);
@@ -64,53 +100,10 @@ export class AuthService {
     return { ...employee };
   }
 
-  async login(req: EmployeeLogin): Promise<EmployeeResponse> {
-    const validateData = this.validationService.validate(
-      AuthValidation.LOGIN,
-      req,
-    ) as EmployeeLogin;
-
-    const employee = await this.repository.findOne({
-      where: { email: validateData.email },
+  async login(req: Employee): Promise<EmployeeResponse> {
+    return Promise.resolve({
+      ...req,
     });
-
-    if (!employee) {
-      throw new HttpException(
-        'Email or Password is invalid',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    const isPasswordValid = await bcrypt.compare(
-      validateData.password,
-      employee.password,
-    );
-
-    if (!isPasswordValid) {
-      throw new HttpException(
-        'Email or Password is invalid',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    const token = uuid();
-
-    await this.repository
-      .createQueryBuilder()
-      .update()
-      .set({ token: token })
-      .where('id = :id', { id: employee.id })
-      .execute();
-
-    const data: EmployeeResponse = {
-      email: employee.email,
-      fullName: employee.fullName,
-      employeeCode: employee.employeeCode,
-      userStatus: employee.userStatus,
-      token: token,
-    };
-
-    return { ...data };
   }
 
   async profile(req: Employee): Promise<EmployeeResponse> {
@@ -157,7 +150,6 @@ export class AuthService {
       phone: updatedEmployee.phone,
       citizenId: updatedEmployee.citizenId,
       departmentId: updatedEmployee.departmentId,
-      token: updatedEmployee.token!,
     };
 
     return { ...data };

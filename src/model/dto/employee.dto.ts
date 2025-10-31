@@ -43,5 +43,4 @@ export class EmployeeResponse {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
-  token?: string;
 }
